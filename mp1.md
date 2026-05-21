@@ -3,22 +3,16 @@
 **Notebook:** `Mp1.ipynb`  
 **Charts:** `figures/` (PNG)
 
-## Dataset
+Competency Claims :
 
-City of Seattle **General Business License** data from the open data API:  
-https://data.seattle.gov/resource/wnbq-64tb.json
+C4 — APIs and Data Acquisition
+I pulled data from the Seattle Open Data portal using the Socrata API (data.seattle.gov/resource/wnbq-64tb.json), requesting up to 50,000 business license records in a single call. The endpoint returns structured JSON with fields like trade name, city, ZIP code, and license start date. I filtered the response down to 311 Seattle coffee-related businesses by searching trade names for keywords like "coffee," "cafe," and "espresso." The API is public and requires no key.
 
-The analysis keeps Seattle rows whose **trade name** includes coffee, café, or espresso (~309 locations in the filtered extract).
+C5 — Data Analysis with Pandas
+I used pandas to answer three specific questions about Seattle's coffee shop landscape. I first profiled the raw dataset using df.head() to preview the structure, df.info() to check column types, df.describe() to confirm which fields were numeric, and df.isnull().sum() to identify missing values. From there I filtered rows by city and trade name keywords, used .str.contains() for keyword matching, .fillna() to handle missing ZIP codes, pd.to_datetime() to parse license dates, .groupby() to count licenses by ZIP and year, and a name-repeat heuristic to classify chains vs. independents. One finding that surprised me: independents made up about 82% of licenses (253 out of 311), which I noted could be misleading since spelling variants might split one brand into multiple "unique" names.
 
-## Analytical questions
-
-1. Which Seattle ZIP codes have the highest concentration of coffee shops?
-2. How has the number of new coffee shop openings changed year over year (2000–2024)?
-3. Are chain or independent coffee shops more common in Seattle?
-
-## What I built
-
-`Mp1.ipynb` has four sections:
+C6 — Data Visualization 
+I built three charts using plotly: a bar chart of licenses by ZIP code, a line chart of new coffee shop openings by year (2000–2024), and a bar chart comparing chain vs. independent counts. I chose bar charts for the ZIP and chain/independent questions because I was comparing discrete categories, and a line chart for the year-over-year question because it shows change over time. The year chart revealed a clear 2020 dip and a 2023 surge, which fits a COVID pattern. All charts are saved as static images to Mp1/figures/ using kaleido, and the notebook includes markdown cells interpreting each finding.
 
 - **Overview** — dataset, motivation, and who would use the findings  
 - **Data Profile** — `head()`, `info()`, `describe()`, `isnull().sum()` with short interpretations  
